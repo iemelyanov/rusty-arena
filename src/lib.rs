@@ -10,7 +10,6 @@ pub mod arena {
 
     struct Block {
         ptr: *mut u8,
-        layout: Layout,
         count_of_elements: usize,
     }
 
@@ -45,7 +44,6 @@ pub mod arena {
                 let block_ptr = alloc(layout);
                 self.blocks.push(Block {
                     ptr: block_ptr,
-                    layout,
                     count_of_elements: 0,
                 });
                 self.alloc_ptr = block_ptr;
@@ -74,7 +72,7 @@ pub mod arena {
                         let x = mem::transmute::<*mut u8, &mut T>(ptr);
                         std::ptr::drop_in_place(x);
                     }
-                    dealloc(block.ptr, block.layout);
+                    dealloc(block.ptr, layout);
                 }
             }
         }
